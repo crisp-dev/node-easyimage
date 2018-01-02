@@ -145,14 +145,14 @@ exports.convert = function(options) {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
-			}	
+			}
 		}
 		else {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
 				args.push('-flatten')
-			}	
+			}
 		}
 
 		args.push(options.dst)
@@ -187,14 +187,14 @@ exports.rotate = function(options) {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
-			}	
+			}
 		}
 		else {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
 				args.push('-flatten')
-			}	
+			}
 		}
 
 		args.push('-rotate')
@@ -236,17 +236,19 @@ exports.resize = function(options) {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
-			}	
+			}
 		}
 		else {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
 				args.push('-flatten')
-			}	
+			}
 		}
 
-    args.push('-auto-orient')
+		if (options.autoOrient) {
+    	args.push('-auto-orient')
+   	}
     args.push('-resize')
     args.push(options.width + 'x' + options.height)
     if (options.ignoreAspectRatio) {
@@ -294,17 +296,19 @@ exports.crop = function(options) {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
-			}	
+			}
 		}
 		else {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
 				args.push('-flatten')
-			}	
+			}
 		}
 
-    args.push('-auto-orient')
+		if (options.autoOrient) {
+    	args.push('-auto-orient')
+   	}
     args.push('-gravity')
     args.push(options.gravity)
     args.push('-crop')
@@ -356,17 +360,19 @@ exports.rescrop = function(options) {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
-			}	
+			}
 		}
 		else {
 			if (options.background) {
 				args.push('-background')
 				args.push(options.background)
 				args.push('-flatten')
-			}	
+			}
 		}
 
-    args.push('-auto-orient')
+		if (options.autoOrient) {
+    	args.push('-auto-orient')
+   	}
     args.push('-gravity')
     args.push(options.gravity)
     args.push('-resize')
@@ -428,17 +434,19 @@ exports.thumbnail = function(options) {
 				if (options.background) {
 					args.push('-background')
 					args.push(options.background)
-				}	
+				}
 			}
 			else {
 				if (options.background) {
 					args.push('-background')
 					args.push(options.background)
 					args.push('-flatten')
-				}	
+				}
 			}
 
-	    args.push('-auto-orient')
+			if (options.autoOrient) {
+	    	args.push('-auto-orient')
+	   	}
 	    args.push('-gravity')
 	    args.push(options.gravity)
 	    args.push('-interpolate')
