@@ -155,6 +155,11 @@ exports.convert = function(options) {
 			}
 		}
 
+    if (options.interlace) {
+    	args.push('-interlace')
+    	args.push(options.interlace)
+    }
+
 		args.push(options.dst)
 
 		child = exec('convert', args, function(err, stdout, stderr) {
@@ -265,6 +270,10 @@ exports.resize = function(options) {
 			args.push('-background')
 			args.push(options.background)
 		}
+    if (options.interlace) {
+    	args.push('-interlace')
+    	args.push(options.interlace)
+    }
     args.push(options.dst)
 
 		child = exec('convert', args, function(err, stdout, stderr) {
@@ -324,6 +333,10 @@ exports.crop = function(options) {
 			args.push('-background')
 			args.push(options.background)
 		}
+    if (options.interlace) {
+    	args.push('-interlace')
+    	args.push(options.interlace)
+    }
     args.push(options.dst)
 
 		child = exec('convert', args, function(err, stdout, stderr) {
@@ -390,6 +403,10 @@ exports.rescrop = function(options) {
 			args.push('-background')
 			args.push(options.background)
 		}
+    if (options.interlace) {
+    	args.push('-interlace')
+    	args.push(options.interlace)
+    }
     args.push(options.dst)
 
 		child = exec('convert', args, function(err, stdout, stderr) {
@@ -467,6 +484,10 @@ exports.thumbnail = function(options) {
 				args.push('-background')
 				args.push(options.background)
 			}
+	    if (options.interlace) {
+	    	args.push('-interlace')
+	    	args.push(options.interlace)
+	    }
 	    args.push(options.dst)
 
 			child = exec('convert', args, function(err, stdout, stderr) {
