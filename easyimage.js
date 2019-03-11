@@ -25,6 +25,30 @@ var error_messages = {
 	'unsupported': 'File not supported.',
 };
 
+// execute a child process with a timeout
+function exec_with_timeout(command, args, timeout, callback) {
+	timeout = (timeout || 10000);
+
+	var execTimeout = null;
+
+	child = exec(command, args, function(err, stdout, stderr) {
+		if (execTimeout !== null) {
+			clearTimeout(execTimeout);
+
+			execTimeout = null;
+		}
+
+		callback(err, stdout, stderr);
+	});
+
+	execTimeout = setTimeout(function() {
+		execTimeout = null;
+
+		// child process took too much time, kill it now
+		child.kill("SIGKILL");
+	}, timeout);
+}
+
 // general info function
 function info(file) {
 
@@ -51,7 +75,7 @@ function info(file) {
 	args.push('%m %z %w %h %b %x %y %f')
 	args.push(file)
 
-	child = exec('identify', args, function(err, stdout, stderr) {
+	exec_with_timeout('identify', args, undefined, function(err, stdout, stderr) {
 		var info = {};
 		//console.log(stdout)
 		//Basic error handling
@@ -162,7 +186,7 @@ exports.convert = function(options) {
 
 		args.push(options.dst)
 
-		child = exec('convert', args, function(err, stdout, stderr) {
+		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 
 			if (err) deferred.reject(err);
 			else deferred.resolve(info(options.dst));
@@ -210,7 +234,7 @@ exports.rotate = function(options) {
 		}
 		args.push(options.dst)
 
-		child = exec('convert', args, function(err, stdout, stderr) {
+		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
 			else deferred.resolve(info(options.dst));
 		});
@@ -279,7 +303,7 @@ exports.resize = function(options) {
     }
     args.push(options.dst)
 
-		child = exec('convert', args, function(err, stdout, stderr) {
+		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
 			deferred.resolve(info(options.dst));
 		});
@@ -342,7 +366,7 @@ exports.crop = function(options) {
     }
     args.push(options.dst)
 
-		child = exec('convert', args, function(err, stdout, stderr) {
+		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
 			deferred.resolve(info(options.dst));
 		});
@@ -412,7 +436,7 @@ exports.rescrop = function(options) {
     }
     args.push(options.dst)
 
-		child = exec('convert', args, function(err, stdout, stderr) {
+		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
 			deferred.resolve(info(options.dst));
 		});
@@ -493,7 +517,7 @@ exports.thumbnail = function(options) {
 	    }
 	    args.push(options.dst)
 
-			child = exec('convert', args, function(err, stdout, stderr) {
+			exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 				if (err) return deferred.reject(err);
 				deferred.resolve(info(options.dst));
 			});
@@ -513,7 +537,7 @@ exports.exec = function(cmd) {
 
 	process.nextTick(function () {
 
-		child = command(cmd, function(err, stdout, stderr) {
+		command(cmd, function(err, stdout, stderr) {
 			if (err) return deferred.reject(err);
 			deferred.resolve(stdout);
 		});
