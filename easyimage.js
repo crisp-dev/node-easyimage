@@ -189,7 +189,7 @@ exports.convert = function(options) {
 		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 
 			if (err) deferred.reject(err);
-			else deferred.resolve(info(options.dst));
+			else deferred.resolve(options.dst);
 		});
 
 	}
@@ -236,7 +236,7 @@ exports.rotate = function(options) {
 
 		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
-			else deferred.resolve(info(options.dst));
+			else deferred.resolve(options.dst);
 		});
 
 	}
@@ -305,7 +305,7 @@ exports.resize = function(options) {
 
 		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
-			deferred.resolve(info(options.dst));
+			deferred.resolve(options.dst);
 		});
 
 	}
@@ -368,7 +368,7 @@ exports.crop = function(options) {
 
 		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
-			deferred.resolve(info(options.dst));
+			deferred.resolve(options.dst);
 		});
 	}
 
@@ -438,7 +438,7 @@ exports.rescrop = function(options) {
 
 		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 			if (err) deferred.reject(err);
-			deferred.resolve(info(options.dst));
+			deferred.resolve(options.dst);
 		});
 
 	}
@@ -519,7 +519,7 @@ exports.thumbnail = function(options) {
 
 			exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
 				if (err) return deferred.reject(err);
-				deferred.resolve(info(options.dst));
+				deferred.resolve(options.dst);
 			});
 
 		}, function (err) { deferred.reject(err); });

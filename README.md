@@ -83,8 +83,8 @@ easyimg.rescrop({
      cropwidth:128, cropheight:128,
      x:0, y:0
   }).then(
-  function(image) {
-     console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
+  function(fileName) {
+     console.log('Resized and cropped: ' + fileName);
   },
   function (err) {
     console.log(err);
