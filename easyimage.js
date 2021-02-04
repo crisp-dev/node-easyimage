@@ -128,20 +128,20 @@ exports.info = function(file) {
 
 
 
-function directoryCheck(options, command) {
+function directoryCheck(options, success, failure) {
 
 	var targetDir = path.dirname(options.dst)
 	fs.exists(targetDir, function (exists) {
 		if (exists) {
-			command()
+			success()
 		}
 		else {
 			mkdirp(targetDir, function (error) {
 				if (error) {
-					throw new Error(error)
+					failure(error)
 				}
 				else {
-					command()
+					success()
 				}
 			})
 		}
@@ -194,7 +194,7 @@ exports.convert = function(options) {
 
 	}
 
-	directoryCheck(options, imgConvert)
+	directoryCheck(options, imgConvert, deferred.reject)
 
 	return deferred.promise;
 };
@@ -241,7 +241,7 @@ exports.rotate = function(options) {
 
 	}
 
-	directoryCheck(options, imgRotate)
+	directoryCheck(options, imgRotate, deferred.reject)
 
 	return deferred.promise;
 };
@@ -310,7 +310,7 @@ exports.resize = function(options) {
 
 	}
 
-	directoryCheck(options, imgResize)
+	directoryCheck(options, imgResize, deferred.reject)
 	return deferred.promise;
 };
 
@@ -372,7 +372,7 @@ exports.crop = function(options) {
 		});
 	}
 
-	directoryCheck(options, imgCrop)
+	directoryCheck(options, imgCrop, deferred.reject)
 	return deferred.promise;
 };
 
@@ -443,7 +443,7 @@ exports.rescrop = function(options) {
 
 	}
 
-	directoryCheck(options, imgResCrop)
+	directoryCheck(options, imgResCrop, deferred.reject)
 	return deferred.promise;
 };
 
@@ -526,7 +526,7 @@ exports.thumbnail = function(options) {
 
 	}
 
-	directoryCheck(options, imgThumbnail)
+	directoryCheck(options, imgThumbnail, deferred.reject)
 	return deferred.promise;
 };
 
