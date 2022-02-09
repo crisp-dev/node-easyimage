@@ -45,7 +45,7 @@ function exec_with_timeout(command, args, timeout, callback) {
 		execTimeout = null;
 
 		// child process took too much time, kill it now
-		child.kill("SIGTERM");
+		child.kill("SIGKILL");
 	}, timeout);
 }
 
