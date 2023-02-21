@@ -1,7 +1,6 @@
 var Q = require('q');
 var exec = require('child_process').execFile;
 var command = require('child_process').exec;
-var colors = require('colors');
 var child;
 var path = require('path');
 var fs = require('fs');
