@@ -1,19 +1,19 @@
 EasyImage [![NPM version](https://badge.fury.io/js/easyimage.svg)](https://badge.fury.io/js/easyimage)
 =========
 
-EasyImage is a promise-based image processing module for Node.js, it is built on top of ImageMagick, so make sure ImageMagick is installed on your system.
+EasyImage is a promise-based image processing module for Node.js, it is built on top of GraphicsMagick, so make sure GraphicsMagick is installed on your system.
 
 On Ubuntu
 ```
-$ apt-get install imagemagick
+$ apt-get install graphicsmagick
 ```
 On Mac OS X
 ```
-$ brew install imagemagick
+$ brew install graphicsmagick
 ```
 On CentOS
 ```
-$ yum install imagemagick
+$ yum install graphicsmagick
 ```
 
 ## Installation
@@ -36,7 +36,7 @@ easyimg.crop(<options>) - to crop an image.
 easyimg.thumbnail(<options>) - to create square thumbnails.
 easyimg.rescrop(<options>) - to resize and crop and image in one go, useful for creating customzied thumbnails.
 easyimg.rotate(<options>) - to rotate an image.
-easyimg.exec(<command>) - when you want to call a custom command to ImageMagick, you will need to take care of escaping special characters etc.
+easyimg.exec(<command>) - when you want to call a custom command to GraphicsMagick, you will need to take care of escaping special characters etc.
 ```
 **NOTE**: `easyimg.exec()` spawns a subshell.
 

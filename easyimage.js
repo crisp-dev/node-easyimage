@@ -7,13 +7,15 @@ var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 
-// check if ImageMagick is available on the system
-command('convert -version', function(err, stdout, stderr) {
+var BINARY_NAME = "gm";
 
-	// ImageMagick is NOT available on the system, exit with download info
+// check if GraphicsMagick is available on the system
+command((BINARY_NAME + ' convert -version'), function(err, stdout, stderr) {
+
+	// GraphicsMagick is NOT available on the system, exit with download info
 	if (err) {
-		console.log(' ImageMagick Not Found'.red)
-		console.log(' EasyImage requires ImageMagick to work. Install it from http://www.imagemagick.org/script/binary-releases.php.\n')
+		console.log(' GraphicsMagick Not Found'.red)
+		console.log(' EasyImage requires GraphicsMagick to work. Install it from http://www.graphicsmagick.org/\n')
 	}
 
 })
@@ -31,7 +33,7 @@ function exec_with_timeout(command, args, timeout, callback) {
 
 	var execTimeout = null;
 
-	child = exec(command, args, function(err, stdout, stderr) {
+	child = exec((BINARY_NAME + " " + command), args, function(err, stdout, stderr) {
 		if (execTimeout !== null) {
 			clearTimeout(execTimeout);
 
@@ -530,14 +532,14 @@ exports.thumbnail = function(options) {
 	return deferred.promise;
 };
 
-// issue your own ImageMagick command
+// issue your own GraphicsMagick command
 exports.exec = function(cmd) {
 
 	var deferred = Q.defer();
 
 	process.nextTick(function () {
 
-		command(cmd, function(err, stdout, stderr) {
+		command((BINARY_NAME + " " + cmd), function(err, stdout, stderr) {
 			if (err) return deferred.reject(err);
 			deferred.resolve(stdout);
 		});
