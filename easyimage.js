@@ -57,22 +57,22 @@ function info(file) {
 	var parseSize = function(sizeString) {
 
 		var unit = {
-			B: 1,
-			KB: 1000,
-			MB: 1000000,            // =1000^2
-			GB: 1000000000,         // =1000^3
-			TB: 1000000000000       // =1000^4
+			i: 1,
+			Ki: 1000,
+			Mi: 1000000,            // =1000^2
+			Gi: 1000000000,         // =1000^3
+			Ti: 1000000000000       // =1000^4
 		};
 
-		var rx = /^(\d*\.?\d*)([KMGT]?B)$/;  // regex for extract the float value and its unit
+		var rx = /^(\d*\.?\d*)([KMGT]?i)$/;  // regex for extract the float value and its unit
 		var sizeArray = rx.exec(sizeString);
 
 		return parseFloat(sizeArray[1]) * unit[sizeArray[2]];
 	};
 
-	// %z = depth, %m = type, %w = width, %h = height, %b = rounded filesize in byte, %f = filename, %x = density
+	// %q = depth, %m = type, %w = width, %h = height, %b = rounded filesize in byte, %f = filename, %x = density
 	var args = ['-format']
-	args.push('%m %z %w %h %b %x %y %f')
+	args.push('%m %q %w %h %b %x %y %f')
 	args.push(file)
 
 	exec_with_timeout('identify', args, undefined, function(err, stdout, stderr) {
