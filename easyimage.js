@@ -67,7 +67,11 @@ function info(file) {
 		var rx = /^(\d*\.?\d*)([KMGT]?i)$/;  // regex for extract the float value and its unit
 		var sizeArray = rx.exec(sizeString);
 
-		return parseFloat(sizeArray[1]) * unit[sizeArray[2]];
+		if (sizeArray) {
+			return parseFloat(sizeArray[1]) * unit[sizeArray[2]];
+		}
+
+		return -1;
 	};
 
 	// %q = depth, %m = type, %w = width, %h = height, %b = rounded filesize in byte, %f = filename, %x = density
