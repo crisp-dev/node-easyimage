@@ -28,12 +28,12 @@ var error_messages = {
 };
 
 // execute a child process with a timeout
-function exec_with_timeout(command, args, timeout, callback) {
+function exec_with_timeout(action, args, timeout, callback) {
 	timeout = (timeout || 10000);
 
 	var execTimeout = null;
 
-	child = exec((BINARY_NAME + " " + command), args, function(err, stdout, stderr) {
+	child = exec(BINARY_NAME, [action].concat(args), function(err, stdout, stderr) {
 		if (execTimeout !== null) {
 			clearTimeout(execTimeout);
 
@@ -498,8 +498,6 @@ exports.thumbnail = function(options) {
 	   	}
 	    args.push('-gravity')
 	    args.push(options.gravity)
-	    args.push('-interpolate')
-	    args.push('catrom')
 	    args.push('-strip')
 	    args.push('-thumbnail')
 	    args.push(resizewidth + 'x' + resizeheight)
