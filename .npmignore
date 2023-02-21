@@ -3,6 +3,3 @@
 *.DS_Store
 *.swp
 *.out
-
-output/
-kitten.jpg

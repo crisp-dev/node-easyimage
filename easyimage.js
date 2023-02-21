@@ -71,7 +71,6 @@ function info(file) {
 		return parseFloat(sizeArray[1]) * unit[sizeArray[2]];
 	};
 
-	//file = quoted_name(file);
 	// %z = depth, %m = type, %w = width, %h = height, %b = rounded filesize in byte, %f = filename, %x = density
 	var args = ['-format']
 	args.push('%m %z %w %h %b %x %y %f')
@@ -115,13 +114,6 @@ function info(file) {
 	return deferred.promise;
 }
 
-// function to quote file names, if not already
-function quoted_name(name) {
-	if (name[0] != '"') name = '"' + name;
-	if (name[name.length - 1] != '"') name = name + '"';
-	return name;
-};
-
 
 // get basic information about an image file
 exports.info = function(file) {
@@ -149,104 +141,6 @@ function directoryCheck(options, success, failure) {
 		}
 	})
 }
-
-
-// convert a file type to another
-exports.convert = function(options) {
-
-	var deferred = Q.defer();
-
-	function imgConvert() {
-
-		if (options.src === undefined || options.dst === undefined) return deferred.reject(error_messages['path']);
-
-		var args = [options.src]
-		if (options.quality) {
-			args.push('-quality')
-			args.push(options.quality)
-		}
-
-		if (options.flatten) {
-			args.push('-flatten')
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-			}
-		}
-		else {
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-				args.push('-flatten')
-			}
-		}
-
-    if (options.interlace) {
-    	args.push('-interlace')
-    	args.push(options.interlace)
-    }
-
-		args.push(options.dst)
-
-		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
-
-			if (err) deferred.reject(err);
-			else deferred.resolve(options.dst);
-		});
-
-	}
-
-	directoryCheck(options, imgConvert, deferred.reject)
-
-	return deferred.promise;
-};
-
-
-// rotate a file
-exports.rotate = function(options) {
-
-	var deferred = Q.defer();
-
-	function imgRotate() {
-
-		if (options.src === undefined || options.dst === undefined || options.degree === undefined) return deferred.reject(error_messages['path']);
-
-		var args = [options.src]
-
-		if (options.flatten) {
-			args.push('-flatten')
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-			}
-		}
-		else {
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-				args.push('-flatten')
-			}
-		}
-
-		args.push('-rotate')
-		args.push(options.degree)
- 		if (options.background) {
-			args.push('-background')
-			args.push(options.background)
-		}
-		args.push(options.dst)
-
-		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
-			if (err) deferred.reject(err);
-			else deferred.resolve(options.dst);
-		});
-
-	}
-
-	directoryCheck(options, imgRotate, deferred.reject)
-
-	return deferred.promise;
-};
 
 // resize an image
 exports.resize = function(options) {
@@ -313,139 +207,6 @@ exports.resize = function(options) {
 	}
 
 	directoryCheck(options, imgResize, deferred.reject)
-	return deferred.promise;
-};
-
-// crop an image
-exports.crop = function(options) {
-
-	var deferred = Q.defer();
-
-	function imgCrop() {
-		if (options.src === undefined || options.dst === undefined) return deferred.reject(error_messages['path']);
-		if (options.cropwidth === undefined) return deferred.reject(error_messages['dim']);
-
-		options.cropheight = options.cropheight || options.cropwidth;
-		options.gravity = options.gravity || 'Center';
-		options.x = options.x || 0;
-		options.y = options.y || 0;
-
-    var args = [options.src]
-
-		if (options.flatten) {
-			args.push('-flatten')
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-			}
-		}
-		else {
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-				args.push('-flatten')
-			}
-		}
-
-		if (options.autoOrient) {
-    	args.push('-auto-orient')
-   	}
-    args.push('-gravity')
-    args.push(options.gravity)
-    args.push('-crop')
-    args.push(options.cropwidth + 'x'+ options.cropheight + '+' + options.x + '+' + options.y)
-    if (options.quality) {
-    	args.push('-quality')
-    	args.push(options.quality)
-    }
- 		if (options.background) {
-			args.push('-background')
-			args.push(options.background)
-		}
-    if (options.interlace) {
-    	args.push('-interlace')
-    	args.push(options.interlace)
-    }
-    args.push(options.dst)
-
-		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
-			if (err) deferred.reject(err);
-			deferred.resolve(options.dst);
-		});
-	}
-
-	directoryCheck(options, imgCrop, deferred.reject)
-	return deferred.promise;
-};
-
-// resize and crop in one shot!
-exports.rescrop = function(options) {
-
-	var deferred = Q.defer();
-
-	function imgResCrop() {
-
-		if (options.src === undefined || options.dst === undefined) return deferred.reject(error_messages['path']);
-		if (options.width === undefined) return deferred.reject(error_messages['dim']);
-
-		options.height = options.height || options.width;
-
-		options.cropwidth = options.cropwidth || options.width;
-		options.cropheight = options.cropheight || options.height;
-
-		options.gravity = options.gravity || 'Center';
-		options.x = options.x || 0;
-		options.y = options.y || 0;
-		options.fill = options.fill ? '^' : '';
-
-    var args = [options.src]
-
-		if (options.flatten) {
-			args.push('-flatten')
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-			}
-		}
-		else {
-			if (options.background) {
-				args.push('-background')
-				args.push(options.background)
-				args.push('-flatten')
-			}
-		}
-
-		if (options.autoOrient) {
-    	args.push('-auto-orient')
-   	}
-    args.push('-gravity')
-    args.push(options.gravity)
-    args.push('-resize')
-    args.push(options.width + 'x' + options.height + options.fill)
-    args.push('-crop')
-    args.push(options.cropwidth + 'x'+ options.cropheight + '+' + options.x + '+' + options.y)
-    if (options.quality) {
-    	args.push('-quality')
-    	args.push(options.quality)
-    }
- 		if (options.background) {
-			args.push('-background')
-			args.push(options.background)
-		}
-    if (options.interlace) {
-    	args.push('-interlace')
-    	args.push(options.interlace)
-    }
-    args.push(options.dst)
-
-		exec_with_timeout('convert', args, options.timeout, function(err, stdout, stderr) {
-			if (err) deferred.reject(err);
-			deferred.resolve(options.dst);
-		});
-
-	}
-
-	directoryCheck(options, imgResCrop, deferred.reject)
 	return deferred.promise;
 };
 

@@ -3,6 +3,4 @@
 *.DS_Store
 *.swp
 *.out
-output/
 node_modules/
-temp/
