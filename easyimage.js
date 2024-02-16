@@ -1,7 +1,6 @@
 var Q = require('q');
 var exec = require('child_process').execFile;
 var command = require('child_process').exec;
-var child;
 var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
@@ -32,7 +31,7 @@ function exec_with_timeout(action, args, timeout, callback) {
 
 	var execTimeout = null;
 
-	child = exec(BINARY_NAME, [action].concat(args), function(err, stdout, stderr) {
+	var child = exec(BINARY_NAME, [action].concat(args), function(err, stdout, stderr) {
 		if (execTimeout !== null) {
 			clearTimeout(execTimeout);
 
