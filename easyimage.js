@@ -126,7 +126,15 @@ exports.info = function(file) {
 
 function directoryCheck(options, success, failure) {
 
-	var targetDir = path.dirname(options.dst)
+	var dstPath = options.dst;
+
+	// clear format from path (if any set)
+	if (dstPath.includes(":")) {
+		dstPath = dstPath.split(":")[1];
+	}
+
+	var targetDir = path.dirnamepath.dirname(dstPath)
+
 	fs.exists(targetDir, function (exists) {
 		if (exists) {
 			success()
