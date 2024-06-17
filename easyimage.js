@@ -133,7 +133,7 @@ function directoryCheck(options, success, failure) {
 		dstPath = dstPath.split(":")[1];
 	}
 
-	var targetDir = path.dirnamepath.dirname(dstPath)
+	var targetDir = path.dirname(dstPath);
 
 	fs.exists(targetDir, function (exists) {
 		if (exists) {
