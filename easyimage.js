@@ -166,6 +166,11 @@ exports.resize = function(options) {
 
     var args = [options.src]
 
+    if (options.srcWidth && options.srcHeight) {
+    	args.push('-size')
+    	args.push(options.srcWidth + 'x' + options.srcHeight)
+    }
+
 		if (options.flatten) {
 			args.push('-flatten')
 			if (options.background) {
